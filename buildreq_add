@@ -1,0 +1,12 @@
+# This file contains additional build requirements that did not get
+# picked up automatically. One name per line, no whitespace.
+cups-dev
+karchive-dev
+kguiaddons-dev
+librsvg-bin
+qt5compat-dev
+qt6base-dev
+qt6svg-dev
+qt6webengine-dev
+qt6websockets-dev
+qtkeychain-dev

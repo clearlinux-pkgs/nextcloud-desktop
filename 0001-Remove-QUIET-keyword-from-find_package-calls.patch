@@ -1,0 +1,129 @@
+From 395270e21f8607ee8e3bf949788e1c895f051c91 Mon Sep 17 00:00:00 2001
+From: "Brett T. Warden" <brett.t.warden@intel.com>
+Date: Tue, 1 Oct 2024 14:53:08 -0700
+Subject: [PATCH] Remove QUIET keyword from find_package calls
+
+This masks failed sub-dependencies. Remove it so we can see why things
+failed and provide the necessary dependencies.
+---
+ CMakeLists.txt                                |  4 ++--
+ cmake/modules/GetGitRevisionDescription.cmake |  2 +-
+ shell_integration/CMakeLists.txt              |  4 ++--
+ src/CMakeLists.txt                            | 12 ++++++------
+ test/CMakeLists.txt                           |  2 +-
+ 5 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 27102a6f0e7c..92dfd24998f2 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -245,7 +245,7 @@ endif()
+ 
+ option(BUILD_WITH_WEBENGINE "BUILD_WITH_WEBENGINE" ON)
+ if (BUILD_WITH_WEBENGINE)
+-    find_package(Qt${QT_VERSION_MAJOR}WebEngineCore ${REQUIRED_QT_VERSION} CONFIG QUIET)
++    find_package(Qt${QT_VERSION_MAJOR}WebEngineCore ${REQUIRED_QT_VERSION} CONFIG )
+     if(APPLE)
+         set_package_properties(Qt${QT_VERSION_MAJOR}WebEngineCore PROPERTIES
+             DESCRIPTION "Qt${QT_VERSION_MAJOR} WebEngineCore component."
+@@ -258,7 +258,7 @@ if (BUILD_WITH_WEBENGINE)
+         )
+     endif()
+ 
+-    find_package(Qt${QT_MAJOR_VERSION}WebEngineWidgets ${REQUIRED_QT_VERSION} CONFIG QUIET)
++    find_package(Qt${QT_MAJOR_VERSION}WebEngineWidgets ${REQUIRED_QT_VERSION} CONFIG )
+     if(APPLE)
+         set_package_properties(Qt${QT_MAJOR_VERSION}WebEngineWidgets PROPERTIES
+             DESCRIPTION "Qt${QT_MAJOR_VERSION} WebEngineWidgets component."
+diff --git a/cmake/modules/GetGitRevisionDescription.cmake b/cmake/modules/GetGitRevisionDescription.cmake
+index 1f9005b69fd7..913ab0f9230f 100644
+--- a/cmake/modules/GetGitRevisionDescription.cmake
++++ b/cmake/modules/GetGitRevisionDescription.cmake
+@@ -68,7 +68,7 @@ endfunction()
+ 
+ function(git_describe _var)
+ 	if(NOT GIT_FOUND)
+-		find_package(Git QUIET)
++		find_package(Git )
+ 	endif()
+ 	get_git_head_revision(refspec hash)
+ 	if(NOT GIT_FOUND)
+diff --git a/shell_integration/CMakeLists.txt b/shell_integration/CMakeLists.txt
+index f4118414a057..bc8c88f91201 100644
+--- a/shell_integration/CMakeLists.txt
++++ b/shell_integration/CMakeLists.txt
+@@ -11,8 +11,8 @@ if( UNIX AND NOT APPLE )
+   endif()
+ 
+   if(BUILD_SHELL_INTEGRATION_DOLPHIN)
+-    find_package(KF5KIO "5.16" CONFIG QUIET)
+-    find_package(KF6KIO "5.240" CONFIG QUIET)
++    find_package(KF5KIO "5.16" CONFIG )
++    find_package(KF6KIO "5.240" CONFIG )
+     if(KF5KIO_FOUND OR KF6KIO_FOUND)
+       add_subdirectory(dolphin)
+     else()
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index fe9d4d9affab..a9086fae3952 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -2,37 +2,37 @@ include(ECMEnableSanitizers)
+ 
+ set(REQUIRED_QT_VERSION "6.5.0")
+ 
+-find_package(Qt${QT_MAJOR_VERSION}Core ${REQUIRED_QT_VERSION} CONFIG QUIET)
++find_package(Qt${QT_MAJOR_VERSION}Core ${REQUIRED_QT_VERSION} CONFIG )
+ set_package_properties(Qt${QT_MAJOR_VERSION}Core PROPERTIES
+     DESCRIPTION "Qt${QT_MAJOR_VERSION} Core component."
+     TYPE REQUIRED
+ )
+ 
+-find_package(Qt${QT_MAJOR_VERSION}Network ${REQUIRED_QT_VERSION} CONFIG QUIET)
++find_package(Qt${QT_MAJOR_VERSION}Network ${REQUIRED_QT_VERSION} CONFIG )
+ set_package_properties(Qt${QT_MAJOR_VERSION}Network PROPERTIES
+     DESCRIPTION "Qt${QT_MAJOR_VERSION} Network component."
+     TYPE REQUIRED
+ )
+ 
+-find_package(Qt${QT_MAJOR_VERSION}Xml ${REQUIRED_QT_VERSION} CONFIG QUIET)
++find_package(Qt${QT_MAJOR_VERSION}Xml ${REQUIRED_QT_VERSION} CONFIG )
+ set_package_properties(Qt${QT_MAJOR_VERSION}Xml PROPERTIES
+     DESCRIPTION "Qt${QT_MAJOR_VERSION} Xml component."
+     TYPE REQUIRED
+ )
+ 
+-find_package(Qt${QT_MAJOR_VERSION}Concurrent ${REQUIRED_QT_VERSION} CONFIG QUIET)
++find_package(Qt${QT_MAJOR_VERSION}Concurrent ${REQUIRED_QT_VERSION} CONFIG )
+ set_package_properties(Qt${QT_MAJOR_VERSION}Concurrent PROPERTIES
+     DESCRIPTION "Qt${QT_MAJOR_VERSION} Concurrent component."
+     TYPE REQUIRED
+ )
+ 
+-find_package(Qt${QT_MAJOR_VERSION}QuickWidgets ${REQUIRED_QT_VERSION} CONFIG QUIET)
++find_package(Qt${QT_MAJOR_VERSION}QuickWidgets ${REQUIRED_QT_VERSION} CONFIG )
+ set_package_properties(Qt${QT_MAJOR_VERSION}QuickWidgets PROPERTIES
+     DESCRIPTION "Qt${QT_MAJOR_VERSION} QuickWidgets component."
+     TYPE REQUIRED
+ )
+ 
+-find_package(Qt${QT_VERSION_MAJOR}Core5Compat ${REQUIRED_QT_VERSION} CONFIG QUIET)
++find_package(Qt${QT_VERSION_MAJOR}Core5Compat ${REQUIRED_QT_VERSION} CONFIG )
+  set_package_properties(Qt${QT_VERSION_MAJOR}Core5Compat PROPERTIES
+      DESCRIPTION "Qt${QT_VERSION_MAJOR} Core5Compat component."
+      TYPE REQUIRED
+diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
+index 75eaaf7049e2..3c0c9104fd1c 100644
+--- a/test/CMakeLists.txt
++++ b/test/CMakeLists.txt
+@@ -4,7 +4,7 @@ include(nextcloud_add_test.cmake)
+ 
+ set(CMAKE_AUTOMOC TRUE)
+ 
+-find_package(Qt${QT_VERSION_MAJOR}Core5Compat ${REQUIRED_QT_VERSION} CONFIG QUIET)
++find_package(Qt${QT_VERSION_MAJOR}Core5Compat ${REQUIRED_QT_VERSION} CONFIG )
+ 
+ add_library(testutils
+   STATIC
+-- 
+2.46.0
+

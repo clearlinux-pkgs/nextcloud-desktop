@@ -1,0 +1,4 @@
+/etc/:
+/etc/Nextcloud:
+Nextcloud
+sync-exclude.lst
