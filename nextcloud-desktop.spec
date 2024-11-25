@@ -6,10 +6,10 @@
 # autospec commit: 5424026
 #
 Name     : nextcloud-desktop
-Version  : 3.14.4
-Release  : 3
-URL      : https://github.com/nextcloud/desktop/archive/v3.14.4/desktop-3.14.4.tar.gz
-Source0  : https://github.com/nextcloud/desktop/archive/v3.14.4/desktop-3.14.4.tar.gz
+Version  : 3.15.0
+Release  : 4
+URL      : https://github.com/nextcloud/desktop/archive/v3.15.0/desktop-3.15.0.tar.gz
+Source0  : https://github.com/nextcloud/desktop/archive/v3.15.0/desktop-3.15.0.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause CC-BY-3.0 GPL-2.0 LGPL-2.1 MIT
@@ -105,8 +105,8 @@ license components for the nextcloud-desktop package.
 
 
 %prep
-%setup -q -n desktop-3.14.4
-cd %{_builddir}/desktop-3.14.4
+%setup -q -n desktop-3.15.0
+cd %{_builddir}/desktop-3.15.0
 %patch -P 1 -p1
 
 %build
@@ -114,7 +114,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1731631916
+export SOURCE_DATE_EPOCH=1732550359
 mkdir -p clr-build
 pushd clr-build
 export GCC_IGNORE_WERROR=1
@@ -158,7 +158,7 @@ FFLAGS="$CLEAR_INTERMEDIATE_FFLAGS"
 FCFLAGS="$CLEAR_INTERMEDIATE_FCFLAGS"
 ASFLAGS="$CLEAR_INTERMEDIATE_ASFLAGS"
 LDFLAGS="$CLEAR_INTERMEDIATE_LDFLAGS"
-export SOURCE_DATE_EPOCH=1731631916
+export SOURCE_DATE_EPOCH=1732550359
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/nextcloud-desktop
 cp %{_builddir}/desktop-%{version}/COPYING %{buildroot}/usr/share/package-licenses/nextcloud-desktop/4cc77b90af91e615a64ae04893fdffa7939db84c || :
@@ -275,9 +275,9 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libnextcloud_csync.so.0
-/usr/lib64/libnextcloud_csync.so.3.14.4
+/usr/lib64/libnextcloud_csync.so.3.15.0
 /usr/lib64/libnextcloudsync.so.0
-/usr/lib64/libnextcloudsync.so.3.14.4
+/usr/lib64/libnextcloudsync.so.3.15.0
 
 %files license
 %defattr(0644,root,root,0755)
